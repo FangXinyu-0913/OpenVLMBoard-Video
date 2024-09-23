@@ -8,8 +8,8 @@ with gr.Blocks() as demo:
     EVAL_TIME = format_timestamp(timestamp)
     results = struct['results']
     N_MODEL = len(results)
-    N_DATA = len(results['LLaVA-v1.5-7B']) - 1
-    DATASETS = list(results['LLaVA-v1.5-7B'])
+    N_DATA = len(results['Video-LLaVA']) - 1
+    DATASETS = list(results['Video-LLaVA'])
     DATASETS.remove('META')
     print(DATASETS)
 
@@ -17,7 +17,7 @@ with gr.Blocks() as demo:
     structs = [abc.abstractproperty() for _ in range(N_DATA)]
 
     with gr.Tabs(elem_classes='tab-buttons') as tabs:
-        with gr.TabItem('🏅 OpenVLM Main Leaderboard', elem_id='main', id=0):
+        with gr.TabItem('🏅 OpenVLM Video Leaderboard', elem_id='main', id=0):
             gr.Markdown(LEADERBOARD_MD['MAIN'])
             table, check_box = BUILD_L1_DF(results, MAIN_FIELDS)
             type_map = check_box['type_map']
@@ -55,6 +55,7 @@ with gr.Blocks() as demo:
                 df = df[df['flag']]
                 df.pop('flag')
                 if len(df):
+                    print(model_type)
                     df['flag'] = [model_type_flag(df.iloc[i], model_type) for i in range(len(df))]
                     df = df[df['flag']]
                     df.pop('flag')
